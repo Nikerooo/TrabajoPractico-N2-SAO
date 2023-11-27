@@ -11,6 +11,8 @@ public class Tp2 {
         String[] materias;
         String[] alumnos;       //Declaramos las variables globales para usarlas en todoel programa
         int[][] notas;      //notas [] []
+        char opcionMenu;
+        boolean salir = false;
         
         
         
@@ -18,21 +20,56 @@ public class Tp2 {
         do {
             System.out.println("Ingrese la cantidad de Materias a ingresar");
             M = leer.nextInt();
-        } while (M<1 || M>=10);
+        } while (M<1 || M>10);
         materias = IngresarDato(M);
+
+
+
         
         do {
             System.out.println("Ingrese la cantidad de Alumnos a ingresar");
             A = leer.nextInt();
-        } while (M<1 || M>=30);
+        } while (M<1 || M>30);
         alumnos = IngresarDato(A);
-        
-        
-        notas = llenarNotas(A, M);
-        
-        menu(A, M, notas, alumnos, materias);
+    
 
-        
+
+        notas = llenarNotas(A, M);
+
+
+        do {
+
+            opcionMenu = menu();
+
+           switch (opcionMenu) {
+                case 'a':
+                    promedios(notas, opcionMenu, alumnos, materias);
+                    break;
+
+                case 'b':
+                    b(A, M, notas, materias, alumnos);     
+                    break;
+                        
+                case 'c':
+                    c(alumnos, A, M,notas);
+                    break;
+
+                case 'd':
+                        promedios(notas, opcionMenu, alumnos, materias);
+                        
+                    break;
+
+                case 'e':
+                    salir = true;
+                    System.out.println("Hasta la proxima!");
+                    
+
+            
+                default:
+                    break;
+            }
+
+        } while (!salir);
         
         
         
@@ -50,7 +87,7 @@ public class Tp2 {
             System.out.print("Ingrese el nombre: ");
             arreglo[i] = leer.nextLine();
             arreglo[i] = arreglo[i].toLowerCase();
-            System.out.println(i);
+            
         }
         
         return arreglo;
@@ -68,9 +105,9 @@ public class Tp2 {
         for (int i = 0; i < A; i++) {
             for (int j = 0; j < M; j++) {
                 
-                notas[i][j] = random.nextInt(10)+1;
-                
+                notas[i][j] = random.nextInt(10)+1;    
             }
+            
         }
         
         return notas;
@@ -83,123 +120,85 @@ public class Tp2 {
 
 
 
-    public static void menu(int A, int M, int[][] notas,String[] alumnos, String[]materias){
+    public static char menu(){
        char opcionMenu; 
         
         System.out.println("Elija una de las siguientes opciones: \n"+
                             "\n"+
-                            "A.- Calcular el promedio de todos los alumnos\n"+
-                            "B.- Mostrar las calificaciones de todos los alumnos\n"+
-                            "C.- Buscar y mostrar las notas de cada estudiante\n"+
+                            "A.- Calcular y mostrar el promedio de todos los alumnos\n"+
+                            "B.- Mostrar la calificacion mas alta y baja de cada asignatura\n"+
+                            "C.- Buscar un estudiante y mostrar sus notas\n"+
                             "D.- Mostrar los estudiantes destacados\n"+
                             "                                                \n"+
                             "E.- SALIR\n");
 
+        do {
+            
+            System.out.println("ingrese la opcion deseada");
+            opcionMenu = leer.next().charAt(0);
+            opcionMenu = Character.toLowerCase(opcionMenu);
+            System.out.println(opcionMenu);
 
+            } while (opcionMenu!='a' && opcionMenu!='b' && opcionMenu!='c' && opcionMenu!='d' && opcionMenu!='e');
         
-        boolean salir = false;
-
-        while (!salir) {
-            
-
-            do {
-            
-                System.out.println("ingrese la opcion deseada");
-                opcionMenu = leer.next().charAt(0);
-                opcionMenu = Character.toLowerCase(opcionMenu);
-
-                } while (opcionMenu!='a' || opcionMenu!='b' ||opcionMenu!='c' ||opcionMenu!='d' ||opcionMenu!='e');
+        return opcionMenu;
+    }
 
 
-
-
-            switch (opcionMenu) {
-                case 'a':
-                    promedio(A, M, notas, opcionMenu, alumnos);
-                    break;
-
-                case 'b':
-                    b(A, M, notas, materias, alumnos);     
-                    break;
-                        
-                case 'c':
-                    c(alumnos, A, M,notas);
-                    break;
-
-                case 'd':
-                        promedio(A, M, notas, opcionMenu, alumnos);
-                        
-                    break;
-
-                case 'e':
-                    salir = true;
-                    System.out.println("Hasta la proxima!");
-                    break;
-
-            
-                default:
-                    break;
+    
+    
+    private static void promedios(int[][] notas, char opcionMenu, String[] alumnos, String[] materias) {
+       
+        double[] promedio=new double[alumnos.length];
+       
+ 
+        for (int i = 0; i < alumnos.length; i++) {
+            double suma = 0;
+            for (int j = 0; j < materias.length; j++) {
+                suma += notas[i][j];
+             
+            }
+            promedio[i] = suma / materias.length;
+        }
+            if (opcionMenu=='a'){
+                System.out.println("Promedios");
+                opcionA(promedio, alumnos);
+            } else {
+                System.out.println("Los alumnos destacados son: ");
+              opcionD(promedio, alumnos);
             }
 
-
-
-
-        }
     }
 
 
-    public static void promedio(int A,int M, int[][] notas, char opcionMenu, String[] alumnos){
-        
-        int[] promedios = new int[A];
-        int promedio = 0;
 
-        for(int i=0; i<A;i++){
+    private static void opcionA(double[] promedio, String[] alumnos) {
 
-            for(int j=0; j<M;i++){
+        for (int i = 0; i < alumnos.length; i++) {
+            System.out.println(alumnos[i]+": "+promedio[i] );
+        }
+    }
+ 
 
-                promedio += notas[i][j];
+    private static void opcionD(double[] promedio, String[] alumnos) {
 
+        for (int i = 0; i < alumnos.length; i++) {
+
+            if (promedio[i] > 9) {
+                System.out.println(alumnos[i]+": "+promedio[i]);
             }
-
-            promedios[i] += promedio;
-            promedios[i] = promedios[i]/M;
-            
-        }
-
-        if(opcionMenu == 'a'){
-            a(alumnos, promedios);
-        }else{
-            d(alumnos, promedios);
-        }
-
-
-    }
-
-
-
-    public static void a(String[] alumnos, int[] promedios){
-        for(int i=0; i<alumnos.length;i++){
-
-            System.out.println("El alumno "+alumnos[i]+" tiene un promedio de :"+promedios[i]);
+     
         }
     }
 
-    public static void d(String[] alumnos, int[] promedios){
-        
-        System.out.println("Alumnos destacado");
-        
-        for(int i=0; i<alumnos.length;i++){
-
-            if(promedios[i]>9){
-
-                System.out.println(alumnos[i]);
-
-            }
-
-        }
-    }
-
-    public static void b(int A, int M, int[][]notas, String[]materias, String[]alumnos){
+    
+    
+    
+    
+    
+    
+    
+        public static void b(int A, int M, int[][]notas, String[]materias, String[]alumnos){
 
         int NotaMasAlta = 0;
         int ubicacion = 0;
