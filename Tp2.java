@@ -41,9 +41,16 @@ public class Tp2 {
 
             opcionMenu = menu();
 
+            for (int i = 0; i < notas.length; i++) {
+                for (int j = 0; j < notas[i].length; j++) {
+                    System.out.print(notas[i][j]+" ");
+                }
+                System.out.println(" ");
+            }
+
            switch (opcionMenu) {
                 case 'a':
-                    A_MostrarPromedios(notas, alumnos, materias);
+                    A_MostrarPromedios(notas, alumnos);
                     break;
 
                 case 'b':
@@ -55,7 +62,7 @@ public class Tp2 {
                     break;
 
                 case 'd':
-                        D_EstudiantesDestacados(notas, alumnos, materias);
+                        D_EstudiantesDestacados(notas, alumnos);
                         
                     break;
 
@@ -141,24 +148,27 @@ public class Tp2 {
 
         } while (opcionMenu!='a' && opcionMenu!='b' && opcionMenu!='c' && opcionMenu!='d' && opcionMenu!='e');
         System.out.println();
+
+        
+
         return opcionMenu;
     }
 
 
     
     
-    private static double[] CalcularPromedios(int[][] notas, String[] alumnos, String[] materias) {
+    private static double[] CalcularPromedios(int[][] notas) {
        
-        double[] promedio=new double[alumnos.length];
+        double[] promedio=new double[notas.length];
        
  
-        for (int i = 0; i < alumnos.length; i++) {
+        for (int i = 0; i < notas.length; i++) {
             double suma = 0;
-            for (int j = 0; j < materias.length; j++) {
+            for (int j = 0; j < notas[i].length; j++) {
                 suma += notas[i][j];
              
             }
-            promedio[i] = suma / materias.length;
+            promedio[i] = suma / notas[i].length;
         }
             
         return promedio;
@@ -167,9 +177,9 @@ public class Tp2 {
 
 
 
-    private static void A_MostrarPromedios(int[][] notas, String[] alumnos, String[] materias) {
+    private static void A_MostrarPromedios(int[][] notas, String[] alumnos) {
 
-        double[] promedio = CalcularPromedios(notas, alumnos, materias);
+        double[] promedio = CalcularPromedios(notas);
         
         for (int i = 0; i < alumnos.length; i++) {
             System.out.println(alumnos[i]+": "+String.format("%.2f", promedio[i]) );
@@ -177,9 +187,9 @@ public class Tp2 {
     }
  
 
-    private static void D_EstudiantesDestacados(int[][] notas, String[] alumnos, String[] materias) {
+    private static void D_EstudiantesDestacados(int[][] notas, String[] alumnos) {
 
-        double[] promedio = CalcularPromedios(notas, alumnos, materias);
+        double[] promedio = CalcularPromedios(notas);
         boolean promedioExcelente = false;
         
         for (int i = 0; i < alumnos.length; i++) {
