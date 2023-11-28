@@ -22,7 +22,7 @@ public class Tp2 {
             M = leer.nextInt();
         } while (M<1 || M>10);
         materias = IngresarDato(M);
-
+        System.out.println();
 
 
         
@@ -31,7 +31,7 @@ public class Tp2 {
             A = leer.nextInt();
         } while (M<1 || M>30);
         alumnos = IngresarDato(A);
-    
+        System.out.println();
 
 
         notas = llenarNotas(A, M);
@@ -43,19 +43,19 @@ public class Tp2 {
 
            switch (opcionMenu) {
                 case 'a':
-                    promedios(notas, opcionMenu, alumnos, materias);
+                    A_MostrarPromedios(notas, alumnos, materias);
                     break;
 
                 case 'b':
-                    b(A, M, notas, materias, alumnos);     
+                    B_MostrarCalificacionesMasAltasyBajas(notas, materias);     
                     break;
                         
                 case 'c':
-                    c(alumnos, A, M,notas);
+                    /*c(alumnos, A, M,notas);*/
                     break;
 
                 case 'd':
-                        promedios(notas, opcionMenu, alumnos, materias);
+                        D_EstudiantesDestacados(notas, alumnos, materias);
                         
                     break;
 
@@ -122,7 +122,7 @@ public class Tp2 {
 
     public static char menu(){
        char opcionMenu; 
-        
+        System.out.println();
         System.out.println("Elija una de las siguientes opciones: \n"+
                             "\n"+
                             "A.- Calcular y mostrar el promedio de todos los alumnos\n"+
@@ -137,17 +137,17 @@ public class Tp2 {
             System.out.println("ingrese la opcion deseada");
             opcionMenu = leer.next().charAt(0);
             opcionMenu = Character.toLowerCase(opcionMenu);
-            System.out.println(opcionMenu);
+            //System.out.println(opcionMenu);
 
-            } while (opcionMenu!='a' && opcionMenu!='b' && opcionMenu!='c' && opcionMenu!='d' && opcionMenu!='e');
-        
+        } while (opcionMenu!='a' && opcionMenu!='b' && opcionMenu!='c' && opcionMenu!='d' && opcionMenu!='e');
+        System.out.println();
         return opcionMenu;
     }
 
 
     
     
-    private static void promedios(int[][] notas, char opcionMenu, String[] alumnos, String[] materias) {
+    private static double[] CalcularPromedios(int[][] notas, String[] alumnos, String[] materias) {
        
         double[] promedio=new double[alumnos.length];
        
@@ -160,66 +160,70 @@ public class Tp2 {
             }
             promedio[i] = suma / materias.length;
         }
-            if (opcionMenu=='a'){
-                System.out.println("Promedios");
-                opcionA(promedio, alumnos);
-            } else {
-                System.out.println("Los alumnos destacados son: ");
-              opcionD(promedio, alumnos);
-            }
+            
+        return promedio;
 
     }
 
 
 
-    private static void opcionA(double[] promedio, String[] alumnos) {
+    private static void A_MostrarPromedios(int[][] notas, String[] alumnos, String[] materias) {
 
+        double[] promedio = CalcularPromedios(notas, alumnos, materias);
+        
         for (int i = 0; i < alumnos.length; i++) {
-            System.out.println(alumnos[i]+": "+promedio[i] );
+            System.out.println(alumnos[i]+": "+String.format("%.2f", promedio[i]) );
         }
     }
  
 
-    private static void opcionD(double[] promedio, String[] alumnos) {
+    private static void D_EstudiantesDestacados(int[][] notas, String[] alumnos, String[] materias) {
 
+        double[] promedio = CalcularPromedios(notas, alumnos, materias);
+        boolean promedioExcelente = false;
+        
         for (int i = 0; i < alumnos.length; i++) {
 
             if (promedio[i] > 9) {
                 System.out.println(alumnos[i]+": "+promedio[i]);
+                promedioExcelente = true;
             }
      
         }
-    }
-
-    
-    
-    
-    
-    
-    
-    
-        public static void b(int A, int M, int[][]notas, String[]materias, String[]alumnos){
-
-        int NotaMasAlta = 0;
-        int ubicacion = 0;
-
-        for(int i=0; i<M ; i++){
-            for(int j=0; i<A ; j++){
-
-                if (notas[j][i] >= NotaMasAlta) {
-                    ubicacion = j;
-                }
-
-
-            }
-
-            System.out.println("La nota mas alta en "+materias[i]+" es para "+alumnos[i]+" con "+notas[ubicacion][i]);
-
+        
+        if(!promedioExcelente){
+            System.out.println("No hay nadie con un promedio mayor a 9. A esforzarse mas!");
         }
-
+        
     }
 
-    public static void c(String[]alumnos, int A, int M, int[][]notas){
+
+    private static void B_MostrarCalificacionesMasAltasyBajas(int notasF [][], String materiasF []){
+
+       
+        
+        for (int j = 0; j < notasF[0].length; j++) {
+            int auxNotaMasBaja = 10;
+            int auxNotaMasAlta = 0;
+            
+            for (int i = 0; i < notasF.length; i++) {
+                if (notasF[i][j] < auxNotaMasBaja) 
+                    auxNotaMasBaja = notasF[i][j];
+                if (notasF[i][j] > auxNotaMasAlta)
+                    auxNotaMasAlta = notasF[i][j];
+            }
+            System.out.println();
+            System.out.println("Materia: " + materiasF[j]);
+            System.out.println("Nota mas baja: " + auxNotaMasBaja);
+            System.out.println("Nota mas alta: " + auxNotaMasAlta);
+            System.out.println();
+        }
+    }
+
+
+
+
+    /*public static void c(String[]alumnos, int A, int M, int[][]notas){
 
         leer.nextLine();
         String pedirAlumnos=leer.nextLine();
@@ -248,7 +252,7 @@ public class Tp2 {
         }
 
 
-    }
+    }*/
 
     
     
