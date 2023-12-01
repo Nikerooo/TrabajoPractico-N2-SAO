@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.Random;        //Declaramos las librerias
+import java.lang.Thread;
 
 
 public class Tp2 {
@@ -60,7 +61,7 @@ public class Tp2 {
                     break;
                         
                 case 'c':
-                    C_BuscarEstudiantes(notas,alumnos);
+                    C_BuscarEstudiantes(notas,alumnos,materias);
                     break;
 
                 case 'd':
@@ -93,7 +94,7 @@ public class Tp2 {
         for (int i = 0; i < N; i++) {
             System.out.print("Ingrese el nombre: ");
             arreglo[i] = leer.nextLine();               //Se guardan los datos que introduzca el usuario
-            arreglo[i] = arreglo[i].toLowerCase();      // Transformamos todo en minusculas para evitar problemas con mayusculas al momento de comparar
+            arreglo[i] = arreglo[i].toUpperCase();      // Transformamos todo en minusculas para evitar problemas con mayusculas al momento de comparar
             
         }
         
@@ -183,7 +184,9 @@ public class Tp2 {
         
         for (int i = 0; i < alumnos.length; i++) {
             System.out.println(alumnos[i]+": "+String.format("%.2f", promedio[i]) );        // Se muestran todos los promedios
+            
         }
+        tiempoEspera(); // Se llama a la funcion para que añada 2,5 segs de espera
     }
  
 
@@ -204,6 +207,7 @@ public class Tp2 {
         if(!promedioExcelente){     // Si se encontro el alumno, no hace falta mostrar el mensaje. Si no, se indica
             System.out.println("No hay nadie con un promedio mayor a 9. A esforzarse mas!");
         }
+        tiempoEspera(); // Se llama a la funcion para que añada 2,5 segs de espera
         
     }
 
@@ -230,17 +234,19 @@ public class Tp2 {
             System.out.println("Nota mas alta: " + auxNotaMasAlta);     // Se muestra la nota mas alta
             System.out.println();
         }
+        tiempoEspera(); // Se llama a la funcion para que añada 2,5 segs de espera
         
     }
 
 
 
 
-    private static void C_BuscarEstudiantes(int [][] notasF, String [] estudiantesF) {      // Se reciben las notas y los estudiantes
+    private static void C_BuscarEstudiantes(int [][] notasF, String [] estudiantesF, String[] materias) {      // Se reciben las notas y los estudiantes
         
         leer.nextLine();
         System.out.println("Ingrese el nombre del alumno a consultar:");
-        String alumnoElegido= leer.nextLine();          // Se piden y se leen 
+        String alumnoElegido= leer.nextLine();          // Se pide y se lee el nombre del alumno a buscar
+        alumnoElegido = alumnoElegido.toUpperCase();    // convertimos el nombre en minusculas para evitar problemas a la hora de comparar
 
         Boolean coincideAlumno=false;       // Se crea la bandera
 
@@ -251,14 +257,16 @@ public class Tp2 {
             if (estudiantesF[i].equals(alumnoElegido)) {    // Se comparan los nombres de los alumnos con el nombre ingresado, si coinciden entra
                 
                 coincideAlumno = true;      // Se encontro coincidencia entre los alumnos guardados y que buscan
-                System.out.println("Notas del Alumno:"+estudiantesF[i]+":");    // SSe muestra el nombre del alumno
+                System.out.println("Notas del Alumno "+estudiantesF[i]+":");    // SSe muestra el nombre del alumno
 
                 for (int j = 0; j < notasF[i].length; j++) {
 
-                    System.out.print(notasF[i][j] + " ");       // Se muestran todas las notas
+                    System.out.println(materias[j]+": "+notasF[i][j] + " ");       // Se muestran todas las notas
+                    
 
                 }
                 System.out.println();
+                tiempoEspera(); // Se llama a la funcion para que añada 2,5 segs de espera
 
             }else i++;  // Si no se encuentra el alumno se le suma uno al contador  
 
@@ -266,6 +274,7 @@ public class Tp2 {
         
         if (!coincideAlumno) {          // Si el alumno ingresado no se encuentra en la lista anteriormente cargada se muestra el siguiente mensaje y se repite todo
           System.out.println("No se encontro alumno con ese nombre");  
+          tiempoEspera(); // Se llama a la funcion para que añada 2,5 segs de espera
         }
     }
 
@@ -305,8 +314,10 @@ public class Tp2 {
         " | |___\\__ \\ |_| |_| | (_| | | (_| | | | |_____| |_\\__ \\\n" +
         " |_____|___/\\__|\\__,_|\\__,_|_|\\__,_|_| |_|      \\__|___/\n" +
         "                                                        ");
+
+        System.out.println("CARGANDO...");
         
-                
+        tiempoEspera(); // Se llama a la funcion para que añada 2,5 segs de espera
                 
                 
                 System.out.println(""
@@ -324,5 +335,12 @@ public class Tp2 {
 
     }
     
+    private static void tiempoEspera(){
+        try{
+            Thread.sleep(2700);
+        } catch(InterruptedException e){
+            System.out.println("Se interrumpido");
+        }
+    }
     
 }
